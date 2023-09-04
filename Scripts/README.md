@@ -16,13 +16,13 @@ To use these utility scripts, follow these steps:
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/yourusername/utility-scripts.git
+   git clone https://github.com/dmighty007/Learnings.git
    ```
 
 2. **Navigate to the Script Directory**:
 
    ```bash
-   cd utility-scripts
+   cd Learnings/Scripts
    ```
 
 3. **Run a Script**:
