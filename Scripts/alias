@@ -1,0 +1,263 @@
+#   -------------------------------
+#   1.  FILE AND FOLDER MANAGEMENT
+#   -------------------------------
+
+alias numFiles='echo $(ls -1 | wc -l)'       # numFiles:     Count of non-hidden files in current dir
+alias make1mb='truncate -s 1m ./1MB.dat'     # make1mb:      Creates a file of 1mb size (all zeros)
+alias make5mb='truncate -s 5m ./5MB.dat'     # make5mb:      Creates a file of 5mb size (all zeros)
+alias make10mb='truncate -s 10m ./10MB.dat'  # make10mb:     Creates a file of 10mb size (all zeros)
+
+
+#   ---------------------------
+#   2.  SEARCHING
+#   ---------------------------
+
+alias qfind="find . -name "                 # qfind:    Quickly search for file
+
+
+#   ---------------------------
+#   3.  PROCESS MANAGEMENT
+#   ---------------------------
+
+#   memHogsTop, memHogsPs:  Find memory hogs
+#   -----------------------------------------------------
+    alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
+
+#   cpuHogs:  Find CPU hogs
+#   -----------------------------------------------------
+    alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
+
+#   ---------------------------
+#   4.  NETWORKING
+#   ---------------------------
+
+alias netCons='lsof -i'                         # netCons:      Show all open TCP/IP sockets
+alias lsock='sudo lsof -i -P'                   # lsock:        Display open sockets
+alias lsockU='sudo lsof -nP | grep UDP'         # lsockU:       Display only open UDP sockets
+alias lsockT='sudo lsof -nP | grep TCP'         # lsockT:       Display only open TCP sockets
+alias openPorts='sudo lsof -i | grep LISTEN'    # openPorts:    All listening connections
+alias showBlocked='sudo ipfw list'              # showBlocked:  All ipfw rules inc/ blocked IPs
+
+
+#   ---------------------------------------
+#   5.  SYSTEMS OPERATIONS & INFORMATION
+#   ---------------------------------------
+
+alias mountReadWrite='mount -uw /'    # mountReadWrite:   For use when booted into single-user
+
+
+#   ---------------------------------------
+#   6.  DATE & TIME MANAGEMENT
+#   ---------------------------------------
+
+alias bdate="date '+%a, %b %d %Y %T %Z'"
+alias cal3='cal -3'
+alias da='date "+%Y-%m-%d %A    %T %Z"'
+alias daysleft='echo "There are $(($(date +%j -d"Dec 31, $(date +%Y)")-$(date +%j))) left in year $(date +%Y)."'
+alias epochtime='date +%s'
+alias mytime='date +%H:%M:%S'
+alias secconvert='date -d@1234567890'
+alias stamp='date "+%Y%m%d%a%H%M"'
+alias timestamp='date "+%Y%m%dT%H%M%S"'
+alias today='date +"%A, %B %-d, %Y"'
+alias weeknum='date +%V'
+
+#   ---------------------------------------
+#   9.  OTHER ALIASES
+#   ---------------------------------------
+
+alias llm="find /lib/modules/$(uname -r) -type f -name '*.ko*'"
+alias cpc="xclip -selection clipboard -i < "
+
+# Directory Listing aliases
+alias dir='ls -hFx'
+#alias l.='ls -d .* --color=tty' # short listing, only hidden files - .*
+alias l.="ls -A | egrep '^\.'"
+alias l='ls -lathF'             # long, sort by newest to oldest
+alias L='ls -latrhF'            # long, sort by oldest to newest
+alias la='ls -Al'               # show hidden files
+alias lc='ls -lcr'              # sort by change time
+alias lk='ls -lSr'              # sort by size
+alias lh='ls -lSrh'             # sort by size human readable
+alias lm='ls -al | more'        # pipe through 'more'
+alias lo='ls -laSFh'            # sort by size largest to smallest
+alias lt='ls -ltr'              # sort by date
+alias lu='ls -lUr'              # sort by access time
+
+
+#   lr:  Full Recursive Directory Listing
+#   ------------------------------------------
+alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
+
+alias dud='du -d 1 -h'                      # Short and human-readable directory listing
+alias duf='du -sh *'                        # Short and human-readable file listing
+
+
+#pacman
+alias sps='sudo pacman -S'
+alias spr='sudo pacman -R'
+alias sprs='sudo pacman -Rs'
+alias sprdd='sudo pacman -Rdd'
+alias spqo='sudo pacman -Qo'
+alias spsii='sudo pacman -Sii'
+alias depends='function_depends'
+
+#fix obvious typo's
+alias cd..='cd ..'
+alias pdw='pwd'
+alias udpate='sudo pacman -Syyu'
+alias upate='sudo pacman -Syyu'
+alias updte='sudo pacman -Syyu'
+alias updqte='sudo pacman -Syyu'
+alias upqll='paru -Syu --noconfirm'
+alias upal='paru -Syu --noconfirm'
+
+#keyboard
+alias give-me-qwerty-us="sudo localectl set-x11-keymap us"
+
+#setlocale
+alias setlocale="sudo localectl set-locale LANG=en_US.UTF-8"
+alias setlocales="sudo localectl set-x11-keymap us && sudo localectl set-locale LANG=en_US.UTF-8"
+
+#pacman unlock
+alias unlock="sudo rm /var/lib/pacman/db.lck"
+alias rmpacmanlock="sudo rm /var/lib/pacman/db.lck"
+
+
+#free
+alias free="free -mt"
+
+#continue download
+alias wget="wget -c"
+
+#userlist
+alias userlist="cut -d: -f1 /etc/passwd | sort"
+
+#merge new settings
+alias merge="xrdb -merge ~/.Xresources"
+
+# Aliases for software managment
+# pacman
+alias pacman="sudo pacman --color auto"
+alias update="sudo pacman -Syyu"
+alias upd="sudo pacman -Syyu"
+
+# paru as aur helper - updates everything
+alias pksyua="paru -Syu --noconfirm"
+alias upall="paru -Syu --noconfirm"
+alias upa="paru -Syu --noconfirm"
+
+#ps
+alias psa="ps auxf"
+alias psgrep="ps aux | grep -v grep | grep -i -e VSZ -e"
+
+#grub update
+alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+alias grub-update="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+#grub issue 08/2022
+alias install-grub-efi="sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi"
+
+#add new fonts
+alias update-fc='sudo fc-cache -fv'
+
+#switch between bash and zsh
+alias tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'"
+alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
+alias tofish="sudo chsh $USER -s /bin/fish && echo 'Now log out.'"
+
+#switch between lightdm and sddm
+alias tolightdm="sudo pacman -S lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings --noconfirm --needed ; sudo systemctl enable lightdm.service -f ; echo 'Lightm is active - reboot now'"
+alias tosddm="sudo pacman -S sddm --noconfirm --needed ; sudo systemctl enable sddm.service -f ; echo 'Sddm is active - reboot now'"
+alias toly="sudo pacman -S ly --noconfirm --needed ; sudo systemctl enable ly.service -f ; echo 'Ly is active - reboot now'"
+alias togdm="sudo pacman -S gdm --noconfirm --needed ; sudo systemctl enable gdm.service -f ; echo 'Gdm is active - reboot now'"
+alias tolxdm="sudo pacman -S lxdm --noconfirm --needed ; sudo systemctl enable lxdm.service -f ; echo 'Lxdm is active - reboot now'"
+
+#hardware info --short
+alias hw="hwinfo --short"
+
+#audio check pulseaudio or pipewire
+alias audio="pactl info | grep 'Server Name'"
+
+#skip integrity check
+alias paruskip='paru -S --mflags --skipinteg'
+alias yayskip='yay -S --mflags --skipinteg'
+alias trizenskip='trizen -S --skipinteg'
+#check cpu
+alias cpu="cpuid -i | grep uarch | head -n 1"
+
+#get fastest mirrors in your neighborhood
+alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+alias mirrord="sudo reflector --latest 30 --number 10 --sort delay --save /etc/pacman.d/mirrorlist"
+alias mirrors="sudo reflector --latest 30 --number 10 --sort score --save /etc/pacman.d/mirrorlist"
+alias mirrora="sudo reflector --latest 30 --number 10 --sort age --save /etc/pacman.d/mirrorlist"
+#our experimental - best option for the moment
+alias mirrorx="sudo reflector --age 6 --latest 20  --fastest 20 --threads 5 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
+alias mirrorxx="sudo reflector --age 6 --latest 20  --fastest 20 --threads 20 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
+alias ram='rate-mirrors --allow-root --disable-comments arch | sudo tee /etc/pacman.d/mirrorlist'
+alias rams='rate-mirrors --allow-root --disable-comments --protocol https arch  | sudo tee /etc/pacman.d/mirrorlist'
+
+
+#youtube download
+alias yta-aac="yt-dlp --extract-audio --audio-format aac "
+alias yta-best="yt-dlp --extract-audio --audio-format best "
+alias yta-flac="yt-dlp --extract-audio --audio-format flac "
+alias yta-mp3="yt-dlp --extract-audio --audio-format mp3 "
+alias ytv-best="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 "
+
+#Recent Installed Packages
+alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+alias riplong="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -3000 | nl"
+
+#Cleanup orphaned packages
+alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
+
+# This will generate a list of explicitly installed packages
+alias list="sudo pacman -Qqe"
+#This will generate a list of explicitly installed packages without dependencies
+alias listt="sudo pacman -Qqet"
+# list of AUR packages
+alias listaur="sudo pacman -Qqem"
+# add > list at the end to write to a file
+
+# install packages from list
+# pacman -S --needed - < my-list-of-packages.txt
+
+#clear
+alias clean="clear; seq 1 $(tput cols) | sort -R | sparklines | lolcat"
+
+#search content with ripgrep
+alias rg="rg --sort path"
+
+#get the error messages from journalctl
+alias jctl="journalctl -p 3 -xb"
+
+#   cd easiear...
+#   -----------------------------------------
+
+alias ..='cd ..'
+alias ...='cd ../../../'
+alias ....='cd ../../../../'
+alias .....='cd ../../../../'
+
+############################################ Custom alias #####################################
+alias vi="nvim"
+alias vis="sudo nvim"
+alias ls="lsd"
+alias solaris="ssh dibyendu@172.16.0.141"
+alias cray2="ssh sc1@172.16.0.229"
+alias cray="ssh chs1@172.16.0.223"
+alias gluon="ssh suman@172.16.2.58"
+alias ssh='TERM=xterm-256color ssh'
+#alias solar_note="ssh -L8084:localhost:8084 solaris -t ssh -L8084:localhost:8084"
+alias update="sudo pacman -Syyu"
+alias pymol="/home/dibya/Soft/pymol/pymol"
+alias gmx21="source /home/dibya/Soft/GMX21/bin/GMXRC"
+alias rchmod="/home/dibya/Soft/Scripts/cmod"
+alias fsdel="/home/dibya/Soft/Scripts/fsnd"
+alias weather="curl wttr.in/kolkata"
+alias solar_note="ssh -tt solaris /bin/bash /home/dibyendu/remote.sh"
+alias grep="grep --color=always -i -n "
+alias pkg_search="sudo pacman -Qe | grep "
+alias tmux="tmux -u"
+alias bb="feh --zoom 40 /home/dibya/Downloads/top-view-break-time-written-sticky-note-binder-clip-pen-biscuits-dark.jpg"
+alias pset="bash ~/Soft/Scripts/set_prompt.sh"

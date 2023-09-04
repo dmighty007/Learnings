@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+parser = argparse.ArgumentParser(description = 'Find the radius of any given circle')
+print("Hellow?")
+parser.add_argument('-dir','--directory', type = str, help='Path of the directory')
+parser.add_argument('-r','--recursive', type = bool, help='If recursive type True', nargs='?', const=False, default=False)
+args = parser.parse_args()
+
+
+def get_absolute_path(dir_name):
+    if dir_name==".":
+        dir_path = os.getcwd()
+    elif dir_name=="..":
+        cwd = os.getcwd().split("/") 
+        dir_path = "/".join(cwd[:-1])
+    else:
+        cwd = os.getcwd()
+        dir_path = cwd + "/" + dir_name 
+    return dir_path
+
+
+dir_name = args.directory
+dir_path = get_absolute_path(dir_name)
+recursive = args.recursive
+
+
+if os.path.isdir(dir_path):
+    flag = "directory"
+elif os.path.isfile(dir_path):
+    flag = "file"
+else:
+    raise FileNotFoundError(f"Wrong Path : Check carefully\n Provided path : {dir_path}")
+
+if flag == "file":
+    src = dir_path
+    os.chmod(src, 0o666)
+elif flag == "directory":
+    if recursive == False:
+        src = dir_path
+        os.chmod(src, 0o755)
+    else:
+        src = dir_path
+        file_list = [os.path.join(dirpath,f) for (dirpath, dirnames, filenames) in os.walk(src) for f in filenames] 
+        directory_list = [os.path.join(dirpath) for (dirpath, dirnames, filenames) in os.walk(src)] 
+        for file in file_list:
+            if os.path.isfile(file):
+                #print(file)
+                os.chmod(file, 0o666)
+
+        for directory in directory_list:
+            if os.path.isdir(directory):
+                os.chmod(directory, 0o755)
+
+else:
+    raise ValueError("flag must be either 'file' or 'directory'")

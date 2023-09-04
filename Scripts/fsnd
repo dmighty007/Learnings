@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+import os
+import numpy as np
+import warnings
+warnings.filterwarnings("ignore")
+import argparse
+
+parser = argparse.ArgumentParser(description = 'Find and remove files with pattern..')
+parser.add_argument('-dir','--directory', type = str, help='Path of the directory')
+#parser.add_argument('-r','--remove', type = bool, help='If remove True', nargs='?', const=False, default=False)
+parser.add_argument('-r', '--remove', action='store_true')
+#group = parser.add_mutually_exclusive_group(required=False)
+parser.add_argument('-e','--end_pattern', type = str,  action='store', help='file end pattern', nargs=1)
+parser.add_argument('-b','--start_pattern', type = str, action='store', help='file start pattern', nargs=1)
+args = parser.parse_args()
+
+def get_absolute_path(dir_name):
+    if dir_name==".":
+        return os.getcwd()
+    elif dir_name=="..":
+        cwd = os.getcwd().split("/")
+        return "/".join(cwd[:-1])
+    else:
+        cwd = os.getcwd()
+        return f"{cwd}/{dir_name}"
+
+def getFiles(src, start_pattern=None, end_pattern=None):
+    files_list = []
+    for root, dirs, files in os.walk(src):
+        for file in files:
+            if start_pattern and end_pattern and file.endswith(end_pattern) and file.startswith(start_pattern) or (not start_pattern or not end_pattern) and start_pattern and file.startswith(start_pattern) or (not start_pattern or not end_pattern) and not start_pattern and end_pattern and file.endswith(end_pattern):
+                files_list.append(os.path.join(root, file))
+            elif (not start_pattern or not end_pattern or not file.endswith(end_pattern) or file.startswith(start_pattern)) and (not start_pattern or not end_pattern or file.endswith(end_pattern)) and (start_pattern and end_pattern or not start_pattern or file.startswith(start_pattern)) and (start_pattern and end_pattern or start_pattern or not end_pattern or file.endswith(end_pattern)):
+                raise ValueError("Pass a pattern to search")
+
+    return files_list
+
+directory = args.directory
+src = get_absolute_path(directory)
+end_pattern = args.end_pattern
+start_pattern = args.start_pattern
+if start_pattern and end_pattern:
+    end_pattern = end_pattern[0]
+    start_pattern = start_pattern[0]
+    files_list = getFiles(src, end_pattern=end_pattern, start_pattern=start_pattern)
+elif start_pattern:
+    start_pattern = start_pattern[0]
+    files_list = getFiles(src, start_pattern=start_pattern)
+elif end_pattern:
+    end_pattern = end_pattern[0]
+    files_list = getFiles(src, end_pattern=end_pattern)
+else:
+    raise ValueError("Pass any pattern!")
+if len(files_list):
+    print(f"\t {len(files_list)} files found." )
+    total_bits = 0.0
+    for file in files_list:
+        file_stats = os.stat(file)
+        fsize = file_stats.st_size
+        total_bits += fsize
+    MB = total_bits/(1024*1024)
+    GB = MB/1024
+    if int(GB) > 1:
+        print(f"\t These file(s) occupies {np.round(GB,3)} GB in size.")
+    elif int(MB) > 1:
+        print(f"\t These file(s) occupies {np.round(MB,3)} MB in size.")
+    else :
+        print(f"\t These file(s) occupies {total_bits//1024} KB in size.")
+    if args.remove:
+        Show_files = input("\t Want to show the files before deleting? [yes/no]  ") or "yes"
+        Show_files = Show_files.strip()
+        if Show_files == "yes":
+            for file in files_list:
+                print(file)
+
+        del_files = input(f"{len(files_list)} files found. Confirm deleting? [no/yes]  ") or "no"
+        if del_files.strip() == "yes":
+            for file in files_list:
+                os.remove(file)
+else:
+    print("   No file found with pattern!")
