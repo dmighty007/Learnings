@@ -79,6 +79,6 @@ This script is provided under the [MIT License](LICENSE).
 
 ## Author
 
-This script was developed by [Your Name]. Please feel free to reach out for any questions or improvements.
+This script was developed by Me. Please feel free to reach out for any questions or improvements.
 
 Enjoy analyzing your MD simulation data using hierarchical clustering!
